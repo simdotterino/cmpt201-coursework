@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+
+  fork();
+  sleep(1);
+
+  if (fork() == 0) {
+
+    printf("Child");
+    getpid();
+  } else {
+    printf("Parent");
+  }
+}

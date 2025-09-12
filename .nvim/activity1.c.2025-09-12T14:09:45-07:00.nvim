@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdlib.h>
+
+int main() {
+  pid_t pid=fork();
+  
+
+  if (pid){
+
+    printf("Parent: the child's PID is ", pid);
+  }
+  else if (pid==0){
+
+    printf("Child\n");
+  }
+  else{
+
+    perror("fork");
+  }
+
+}

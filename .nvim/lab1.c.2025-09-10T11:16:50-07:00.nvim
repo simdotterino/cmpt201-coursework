@@ -1,0 +1,18 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main() {
+
+  // write a prompt
+  // receive input with getline
+  // loop over the tokens in the input
+  // output the tokens
+
+  printf("Please enter some text: ");
+  char text[] = "";
+  getline(text);
+
+  printf("Tokens: /n");
+}

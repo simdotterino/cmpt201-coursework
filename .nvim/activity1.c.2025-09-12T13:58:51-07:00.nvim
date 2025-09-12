@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+
+
+  fork();
+  sleep(1);
+
+  if (fork()==0){
+      #then the process is a child
+      printf(getpid()); 
+  }
+  else{
+
+      #process is a parent
+      printf(getppid());
+  }
+
+  fi
+
+}:q
+
