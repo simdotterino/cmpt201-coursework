@@ -1,0 +1,52 @@
+//use waitpid to wait for the child processes to complete
+//use exec to actually run the user-inputted commands after each fork?
+//exec needs an array of input, so we have to tokenize the input first like in lab 1
+//
+//notes from tutorial:
+//flowchart: prompt --> start child (call exec) --> wait for child to finish --> back to prompt
+//problem: none of the exec functions return, so everything else will go away 
+//so to fix this and continue on to the parent process, we use fork 
+//it clones your current process - the other process needs to wait in the meantime
+//so that's where waitpid comes in
+
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <string.h>
+
+int main() {
+
+  char *line = NULL;
+  size_t n = 0;
+
+  printf("Enter programs to run.\n");
+
+ //tokenize like in lab1 
+ 
+  if (getline(&line, &n, stdin)!=-1){
+
+    char *token = NULL;
+    char *saveptr = NULL;
+    char *str = line;
+    char *delim = "/"; //delim is / this time because we're using commands
+    
+    token = strtok_r(str, delim, &saveptr);
+
+    while (token!=NULL){
+
+      printf("%s", token);
+      str = NULL;
+      token = strtok_r(str, delim, &saveptr);
+
+    }
+  }
+  else{
+      printf("The command couldn't be read.");
+  }
+
+  free(line);
+  pid_t pid = fork();
+}
+

@@ -1,0 +1,13 @@
+#include <stdio.h>
+#include <unistd.h>
+
+int main() {
+
+  char path[] = "";
+
+  printf("Enter programs to run.\n");
+
+  scanf("%s", path);
+
+  pid_t pid = fork();
+}

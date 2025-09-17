@@ -1,0 +1,16 @@
+#include <stdio.h>
+
+int main () {
+
+char path[] = "";
+
+
+printf("Enter programs to run.\n");
+
+scanf("%s", path);
+
+printf("%s", path);
+
+
+
+}
