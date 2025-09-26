@@ -1,0 +1,33 @@
+#include <sys/wait.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+
+int main () {
+
+pid_t pid = fork();
+
+if (pid == 0){
+//child
+execl("/usr/bin/ls", "ls", "-a", "-l", (char *) NULL);
+
+
+}
+
+else if (pid > 0) {
+//parent
+int wstatus;
+
+waitpid(pid, &wstatus, 0);
+
+
+
+}
+
+else{
+printf("Fork failure");
+}
+
+
+}

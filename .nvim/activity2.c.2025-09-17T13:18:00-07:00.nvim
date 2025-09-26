@@ -1,0 +1,28 @@
+#include  <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int main() {
+
+  pid_t pid = fork();
+  
+
+  if (pid == 0){
+
+    //child 
+    execl("home/cmpt201/201-coursework", "ls", "a", "l", "h", (char *) NULL);
+  }
+
+  else if (pid > 0) {
+    //parent
+
+    execl("home/cmpt201/201-coursework", "ls", "a", (char *) NULL);
+
+  }
+
+  else{
+
+  perror("Fork failure");
+  }
+
+}

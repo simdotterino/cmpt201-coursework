@@ -1,0 +1,64 @@
+// start a loop which gets input from the user
+// every sixth input, the first word from before needs to be replaced by the new
+// one so, can use modulus for that use getline to get each input create another
+// function to allocate each word to an array?
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// takes a string and allocates it to the right spot of the array
+// uses int i to help
+
+char **array;
+
+void fillArray(char *input, int i) {
+
+  int index = i % 5;
+  array[index] = input;
+}
+
+void printArray() {
+  // prints the given array line by line
+  // should be called when the user inputs 'print'
+
+
+  for (int i = 0; i < 5; i++) {
+
+    if (array[i] != NULL) {
+      printf("%s\n", array[i]);
+    }
+  }
+}
+
+char *getInput() {
+  char *line = NULL;
+  size_t n = 0;
+
+  printf("Enter input: ");
+
+  ssize_t len = getline(&line, &n, stdin);
+  if (len == -1)
+    exit(1);
+  line[len - 1] = '\0';
+  return line;
+}
+
+int main() {
+
+  char *input = "";
+
+  int i = 0;
+  while (1) {
+
+    input = getInput();
+    fillArray(input, i);
+    i++;
+    if (strcmp(input, "print") == 0) {
+
+      printArray();
+    }
+  }
+
+  free(input);
+}
