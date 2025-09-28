@@ -10,8 +10,7 @@
 // takes a string and allocates it to the right spot of the array
 // uses int i to help
 
-#define SIZE 5
-char *array[SIZE];
+char *array[5];
 
 void fillArray(char *input, int i) {
 
