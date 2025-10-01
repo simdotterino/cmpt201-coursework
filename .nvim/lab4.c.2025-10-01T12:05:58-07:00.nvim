@@ -1,0 +1,72 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+#define HEAP_SIZE 256
+#define BLOCK_SIZE 128
+#define BUF_SIZE 64
+
+void print_out(char *format, void *data, size_t data_size) {
+
+  char buf[BUF_SIZE];
+  ssize_t len = snprintf(buf, BUF_SIZE, format,
+                         data_size == sizeof(uint64_t) ? *(uint64_t *)data
+                                                       : *(void **)data);
+  if (len < 0) {
+    perror("snprintf failed");
+  }
+
+  write(STDOUT_FILENO, buf, len);
+}
+
+void *sbrk(intptr_t increment);
+
+struct header {
+  uint64_t size;
+  struct header *next;
+};
+
+void print_contents(char *block_start, size_t size) {
+
+  for (int i = 0; i < size; i++) {
+
+    char c = (block_start[i] == 0) ? '0' : '1';
+    write(STDOUT_FILENO, &c, i);
+    write(STDOUT_FILENO, "\n", 1);
+  }
+}
+
+int main() {
+
+  char *heap_start = sbrk(0);          // gives the address of the heap's start
+                                       //
+  if (sbrk(HEAP_SIZE) == (void *)-1) { // attempt to increase heap by 256 bytes
+
+    perror("sbrk failed");
+  }
+
+  struct header *block1 =
+      (struct header *)heap_start; // initialize the first block
+  block1->size = BLOCK_SIZE;
+  block1->next = NULL;
+  memset(heap_start + sizeof(struct header), 0, BLOCK_SIZE-sizeof(struct header));
+
+  char *next_address = heap_start + BLOCK_SIZE; // initialize the second block
+  struct header *block2 = (struct header *)next_address;
+  block2->size = BLOCK_SIZE;
+  block2->next = block1;
+  memset(next_address + sizeof(struct header), 1, BLOCK_SIZE-sizeof(struct header));
+
+  print_out("first block:   %p\n", &heap_start, sizeof(void *));
+  print_out("second block:    %p\n", &next_address, sizeof(void *));
+  print_out("first block size:    %lu\n", &block1->size, sizeof(uint64_t));
+  print_out("first block next:    %p\n", &block1->next, sizeof(void *));
+  print_out("second block size:   %lu\n", &block2->size, sizeof(uint64_t));
+  print_out("second block next:   %p\n", &block2->next, sizeof(void *));
+
+  print_contents(heap_start + (sizeof(struct header)),
+                 BLOCK_SIZE - sizeof(struct header));
+  print_contents(next_address + (sizeof(struct header)),
+                 BLOCK_SIZE - sizeof(struct header));
+}
