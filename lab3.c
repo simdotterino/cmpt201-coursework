@@ -9,6 +9,10 @@
 
 // takes a string and allocates it to the right spot of the array
 // uses int i to help
+<<<<<<< HEAD
+=======
+
+>>>>>>> dff2b096f759b67af79682bacaad624426d0cd9d
 char *array[5];
 
 void fillArray(char *input, int i) {
