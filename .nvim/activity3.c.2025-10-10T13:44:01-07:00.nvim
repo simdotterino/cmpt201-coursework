@@ -1,0 +1,52 @@
+#include <pthread.h>
+#include <stdio.h>
+#include <string.h>
+
+// pass thread ID, attribute, function you want to run, argumnents to pass
+// create a thread from the main thread
+// the main thread should print out the newly created thread's tID
+// the main thread should wait until the new thread is done and print out the
+// return value the new thread should get a string as an argument from the main
+// thread, print it out with its own ID, and return the length of the string
+
+void *printString(void *string) {
+
+  char *newStr = (char *)string;
+  printf("%s\n", newStr);
+
+  pthread_t newID = pthread_self();
+  printf("New Thread ID: %lu\n", newID);
+
+  size_t len = strlen(newStr);
+
+  printf("String Length: %lu\n", len);
+
+  return (void *)len;
+}
+
+int main() {
+
+  // pthread_create returns 0 upon success
+  // default attr = NULL
+  pthread_t tid;
+
+  char *string = "Hello";
+
+ int s = pthread_create(&tid, NULL, printString, string);
+ if (s != 0){
+
+   perror("pthread_create error");
+ }
+
+ void *res;
+ int x = pthread_join(tid, res);
+
+ if (x!= 0){
+
+   perror("pthread_join error");
+
+  }
+
+ printf("Return: %ld\n", (long)res);
+ pthread_exit(NULL);
+}
