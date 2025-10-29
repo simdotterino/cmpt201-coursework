@@ -1,5 +1,5 @@
 #include <stdio.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
 
@@ -8,7 +8,7 @@ int main() {
 
   if (pid > 0) {
 
-    printf("Parent: the child's PID is%d", pid, "\n");
+    printf("Parent: the child's PID is ", pid, "\n");
   } else if (pid == 0) {
 
     printf("Child\n");

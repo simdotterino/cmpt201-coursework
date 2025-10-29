@@ -1,0 +1,68 @@
+// use waitpid to wait for the child processes to complete
+// use exec to actually run the user-inputted commands after each fork?
+// exec needs an array of input, so we have to tokenize the input first like in
+// lab 1
+//
+// notes from tutorial:
+// flowchart: prompt --> start child (call exec) --> wait for child to finish
+// --> back to prompt problem: none of the exec functions return, so everything
+// else will go away so to fix this and continue on to the parent process, we
+// use fork it clones your current process - the other process needs to wait in
+// the meantime so that's where waitpid comes in
+// remember that when you call exec, it ends your process
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main() {
+
+  // since it's only one line we're taking in, i will just use scanf and not
+  // tokenize
+  //
+  for (;;) { // should keep going forever
+    printf("Enter programs to run.\n");
+
+    char path[] = "";
+
+    scanf("%s", path);
+
+    pid_t pid = fork();
+
+    // now using the stuff i learned from activity 1
+
+    if (pid == 0) {
+
+      // then we're in the child
+      // so we call exec here
+      // according to man, we should use execl
+      execl(path, path, NULL); // since it's just one line, path is also the
+                               // first and only argument
+
+      // also need to check if execl fails
+
+      if (execl(path, path, NULL) == -1) {
+
+        printf("Exec failure\n");
+      }
+
+    } else if (pid > 0) {
+
+      // then we're in the parent
+      // so we have to wait for the child to finish
+
+      int wstatus;
+      waitpid(pid, &wstatus, 0);
+
+    }
+
+    else {
+
+      // there's been an error
+      perror("Fork failure\n");
+    }
+  }
+}

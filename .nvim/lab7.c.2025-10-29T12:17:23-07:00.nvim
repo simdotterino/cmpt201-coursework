@@ -81,20 +81,25 @@ void map(Input *input, IntermediateInput *intermediate_input) {
 
 void groupByKey(IntermediateInput *input, Output *output, int *result_count) {
 
+  int is_included = 0;
   for (int i = 0; i < *result_count; i++) {
 
     if (output[i].doubled_value == input->doubled_value) {
 
       output[i].line_numbers[output[i].count] = input->line_number;
       output[i].count++;
-      return;
+      int is_included = 1;
     }
   }
 
-  output[*result_count].doubled_value = input->doubled_value;
-  output[*result_count].line_numbers[0] = input->line_number;
-  output[*result_count].count = 1;
-  *result_count += 1;
+  if (is_included == 0) {
+
+    output[*result_count].doubled_value = input->doubled_value;
+    output[*result_count].line_numbers[0] = input->line_number;
+    output[*result_count].count = 1;
+    *result_count += 1;
+  }
+  return;
 }
 
 void reduce(Output *output) {

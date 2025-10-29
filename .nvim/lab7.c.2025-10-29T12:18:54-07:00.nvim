@@ -91,10 +91,11 @@ void groupByKey(IntermediateInput *input, Output *output, int *result_count) {
     }
   }
 
-  output[*result_count].doubled_value = input->doubled_value;
-  output[*result_count].line_numbers[0] = input->line_number;
-  output[*result_count].count = 1;
-  *result_count += 1;
+
+    output[*result_count].doubled_value = input->doubled_value;
+    output[*result_count].line_numbers[0] = input->line_number;
+    output[*result_count].count = 1;
+    *result_count += 1;
 }
 
 void reduce(Output *output) {
